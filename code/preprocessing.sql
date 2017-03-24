@@ -4,7 +4,7 @@ CREATE TABLE contacts_processed (
   id INT UNSIGNED NOT NULL,
   zip_code    VARCHAR(5),
   code_geo VARCHAR(5),
-  town_clean  VARCHAR(60)
+  town_clean  VARCHAR(60),
   PRIMARY KEY (id),
   KEY twn (town_clean)
   )
