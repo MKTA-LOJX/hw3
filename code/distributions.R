@@ -41,6 +41,7 @@ head(dist)
 
 # Mismatches... TODO
 dist[is.na(dist$nb_inscrits),]
+nrow(dist[is.na(dist$nb_inscrits),])
 
 # Ignore DOM TOM for the moment
 dist=dist[complete.cases(dist),]
