@@ -42,6 +42,8 @@ head(dist)
 # Mismatches... TODO
 nrow(dist[is.na(dist$nb_inscrits),])
 
+dist[which.max(dist$relat_dist),]
+
 # Ignore DOM TOM for the moment
 dist=dist[complete.cases(dist),]
 
@@ -49,14 +51,13 @@ dist=dist[complete.cases(dist),]
 gr2 = ggplot(data= dist, aes(x=code_geo, y=relat_dist))+
     geom_bar(alpha=.7, stat="sum")+
     theme(axis.text.x = element_blank())+
-    #scale_x_discrete(breaks=waiver())+
-    labs(title = "Distribution relative des contacts par code insee",y= "Distribution relative", x= "Code Insee")
+    scale_x_discrete(breaks=waiver())+
+    labs(title = "Relative distribution of contacts compared to registered voters",y= "Relative proportion", x= "Code Insee")
 print(gr2)
 
 # By departement ----------------------------------------
 dist['departement'] = substring(dist$code_geo,1,2)
 head(dist)
-aggregate(dist$perc_contacts, dist$perc_pop, by=list(Category=dist$departement), FUN=sum)
 
 charity_dist = aggregate(perc_contacts ~ departement, dist, sum)
 france_dist = aggregate(perc_pop ~ departement, dist, sum)
@@ -66,14 +67,14 @@ gr3 = ggplot(data= charity_dist, aes(x=departement, y=perc_contacts))+
     geom_bar(alpha=.7, stat="sum")+
     theme(axis.text.x = element_blank())+
     scale_x_discrete(breaks=1:5)+
-    labs(title = "Distribution relative des contacts par code insee",y= "Distribution contacts", x= "Code Insee")
+    labs(title = "Contacts distribution by geo code",y= "Proportion", x= "Département")
 print(gr3)
 
 gr4 = ggplot(data=france_dist, aes(x=departement, y=perc_pop))+
     geom_bar(alpha=.7, stat="sum")+
     theme(axis.text.x = element_blank())+
     scale_x_discrete(breaks=1:5)+
-    labs(title = "Distribution relative des contacts par département",y= "Distribution votants", x= "Code Insee")
+    labs(title = "Registered voters distribution by geo code",y= "Proportion", x= "Département")
 print(gr4)
 
 # Relative distribution
@@ -85,6 +86,14 @@ gr5 = ggplot(data=relat_dist, aes(x=departement, y=ratio))+
     geom_bar(alpha=.7, stat="sum")+
     theme(axis.text.x = element_blank())+
     scale_x_discrete(breaks=1:5)+
-    labs(title = "Distribution relative des contacts par département",y= "Distribution relative", x= "Code Insee")
+    labs(title = "Relative distribution of contacts compared to registered voters",y= "Relative proportion", x= "Département")
 print(gr5)
 
+# Export
+write.table(relat_dist, "relat_dist.csv", sep = ";")
+
+donators
+don = donators[,c('code_geo','nb_contacts')]
+don = don[complete.cases(don),]
+
+write.table(don, "donators_by_code_geo.txt")
