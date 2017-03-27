@@ -1,4 +1,8 @@
 ####### NAIVE METHOD FOR ESTIMATING VOTES OF PEOPLE IN CHARITY 2 DATABASE ######
+
+### set working directory to hw3
+
+
 ###### LOADING LIBRARY ######
 
 library(ggplot2)
